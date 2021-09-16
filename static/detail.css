@@ -1,0 +1,21 @@
+
+body {
+    display: grid;
+    grid-template-columns: 100%;
+    grid-template-rows: 100px 200px 450px;
+}
+
+.nav {
+    border-bottom: 1px solid;
+    font-size: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.main {
+    font-size: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

@@ -1,0 +1,26 @@
+.nav {
+    display: flex;
+    justify-content: center;
+    height: 100px;
+    align-items: center;
+    font-size: 60px;
+}
+
+.posting-box {
+    width: 500px;
+    margin-top: 20px;
+}
+
+.wrap {
+    width: 900px;
+    margin: auto;
+
+}
+
+.container {
+    padding-left: 50px;
+}
+
+.custom-file {
+    margin-bottom: 20px;
+}
