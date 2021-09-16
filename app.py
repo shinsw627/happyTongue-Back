@@ -17,6 +17,7 @@ client = MongoClient('mongodb://52.79.226.11', 27017, username="test", password=
 db = client.gruop3
 
 
+
 @app.route('/')
 def home():
     token_receive = request.cookies.get('mytoken')
@@ -138,9 +139,6 @@ def update_like():
         return jsonify({"result": "success", 'msg': 'updated'})
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for("home"))
-
-
-
 
 
 
