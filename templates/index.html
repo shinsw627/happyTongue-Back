@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
+   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@500&family=Nanum+Gothic+Coding:wght@700&display=swap" rel="stylesheet">
 <head>
     <meta charset="UTF-8">
+
     <title>reservation</title>
 
     <link rel="stylesheet" href="static/index.css"/>
@@ -44,7 +46,6 @@
 
                     }
                 })
-
                 location.href = '/check'
 
             } else {
@@ -62,17 +63,24 @@
     </script>
 
 </head>
+
 <body>
 <div class="nav">
-    사이트제목
+    WITH PET
 </div>
 
 <div class="main_1">
-    <div class="person">
-        <span>예약자명</span><br/><input type="person" id="person">
+    <div>
+        <span class="rev"> 예약하기 </span>
     </div>
-    <div class="com1"><span>체크인</span><br/><input type="date" id="checkIn"></div>
-    <div><span>체크아웃</span><br/><input type="date" id="checkOut"></div>
+    <div class="person">
+        <span class="title_under">예약자명</span>
+        <input type="text" placeholder="이름" class="form-control" id="name">
+    </div>
+    <div class="com1">
+        <span>체크인&nbsp;&nbsp;&nbsp;&nbsp;</span> <input type="date" id="checkIn"></div>
+    <div>
+        <span>체크아웃</span> <input type="date" id="checkOut"></div>
     <div class="room">
         <span>강아지 수</span>
         <select name="dogs" id="roomName" class="id">
@@ -87,19 +95,26 @@
 
     <div class="id">
 
-        <span>견종</span>
+        <span>견종&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
 
         <input type="text" placeholder="견종" id="id">
 
     </div>
 
-    <button onclick="getReady()">완료!</button>
+    <div>
+        <button class="bnt_1" onclick="getReady()">완료!</button>
+    </div>
+    <div>
 
-    <button onclick="location.href='/review' ">리뷰 남기기</button>
+        <button class="bnt_2" onclick="location.href='/review' ">리뷰 남기기</button>
+    </div>
 
     <div id="reservations-box">
-
     </div>
+    <div>
+        <span class="decr"> 예약을 원하는 날짜,인원을 선택해 주세요. </span>
+    </div>
+
 
 </div>
 <div class="main_2">

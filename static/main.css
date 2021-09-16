@@ -1,3 +1,7 @@
+* {
+    font-family: 'IBM Plex Sans KR', sans-serif;
+}
+
 .wrap {
     width: 1000px;
     margin: auto;
@@ -12,7 +16,7 @@
 
 .logo {
     margin: 10px 0 0 10px;
-    color: black;
+    color: #191970;
     font-size: 35px;
     font-weight: 700;
 }
@@ -75,6 +79,12 @@
     margin-top: 50px;
     font-size: 15px;
     font-weight: 700;
+    color:#191970;
+
+}
+
+.nav-item{
+    color:#191970;
 }
 
 

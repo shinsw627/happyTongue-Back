@@ -1,6 +1,10 @@
+* {
+    font-family: 'IBM Plex Sans KR', sans-serif;
+}
+
 
 body {
-    background-color: #98DFFF;
+    /*background-color: #14148C;*/
     min-height: 100vh;
 }
 
@@ -8,35 +12,55 @@ body {
     padding: 1rem 1.5rem;
     max-width: 750px;
     margin: auto;
+    border-color: #191970;
 }
 
 .title {
     font-weight: 800;
     font-size: 5rem;
-    font-family: 'Do Hyeon', sans-serif;
+    color: #191970 !important;
 }
 
 .subtitle {
     font-size: 2rem;
-    font-family: 'Jua', sans-serif;
+    color: #191970 !important;
 }
 
-.is-sparta {
-    color: #0AC9FF !important;
-}
+/*.is-sparta {*/
+/*    color: #20B2AA !important;*/
+/*    font-size: 30px;*/
+/*}*/
 
 .button.is-sparta {
-    background-color: #93DAFF;
+    background-color: #4169E1;
     border-color: transparent;
     color: #fff !important;
 }
 
 .button.is-sparta.is-outlined {
     background-color: transparent;
-    border-color: #93DAFF;
-    color: #93DAFF !important;
+    border-color: #191970;
+    color: #000000 !important;
 }
 
 .help {
     color: gray;
+}
+
+#name {
+    width: 150px;
+    height: 80px;
+    display: inline-block;
+
+}
+
+#num {
+    width: 150px;
+    height: 80px;
+    display: inline-block;
+}
+
+.container {
+    border-color: #191970;
+
 }
