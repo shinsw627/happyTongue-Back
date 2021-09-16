@@ -4,6 +4,7 @@
     height: 100px;
     align-items: center;
     font-size: 60px;
+    cursor: pointer;
 }
 
 .posting-box {
