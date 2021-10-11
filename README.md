@@ -1,6 +1,6 @@
 # 항해 4주차 미니프로젝트2
 
-![HappyTongue!](https://www.notion.so/4-2-c1629041157842c0bdc0a7b7b31cae28#f8cff4826e8c45eea0767d61955033d1)
+![HappyTongue!](Untitled.png)
 
 # 해피텅!
 
@@ -28,7 +28,7 @@ Frontend
 
 Figma를 이용해 와이어프레임을 설계했습니다!
 
-![와이어프레임](https://www.notion.so/4-2-c1629041157842c0bdc0a7b7b31cae28#f2987eca9e1746c09854305a901bfd29)
+![와이어프레임](wireframe.jpg)
 
 [https://www.figma.com/file/uUDubcptUhos77TzoODvyP/Untitled?node-id=0%3A1](https://www.figma.com/file/uUDubcptUhos77TzoODvyP/Untitled?node-id=0%3A1)
 
