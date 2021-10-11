@@ -25,6 +25,10 @@ app.get("/", (req, res) => {
   res.render("index");
 });
 
+app.get("/write", (req, res) => {
+  res.render("write");
+});
+
 const handleListen = () => {
   console.log(`서버가 요청을 받을 준비가 됐어요 http://localhost:8080`);
 };

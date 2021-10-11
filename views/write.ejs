@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://code.jquery.com/jquery-3.5.1.js"
+        integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.4.0/socket.io.js"></script>
+    
+    <title>Document</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css" />
+
+  </head>
+  <script>
+    function addpost() {
+      $.ajax({
+        type: "POST",
+        url: "/api/posts",
+        // headers: {
+        //   authorization: `Bearer ${localStorage.getItem("token")}`,
+        // },
+        data: {
+          title: $("#title").val(),
+          content: $("#content").val(),
+          imgUrl: $("#imgUrl").val(),
+          storeName: $("#storeName").val(),
+          storeArea: $("#storeArea").val(),
+        },
+        error: function (xhr, status, error) {
+          if (xhr == 401) {
+            alert("로그인이 필요합니다.");
+          }
+          window.location.href = "/";
+        },
+        success: function (response) {
+          if (response["result"] == "success") {
+            alert("저장 완료!");
+            window.location.href = "/";
+          }
+        },
+      });
+    }
+  </script>
+  <body>
+    <h1>hello world</h1>
+    llll
+    <input
+      class="input is-primary cor_box"
+      type="text"
+      placeholder="title"
+      id="title"
+    />
+
+    <textarea
+      class="textarea is-primary"
+      placeholder="content"
+      id="content"
+    ></textarea>
+
+    <textarea
+      class="textarea is-primary"
+      placeholder="imgurl"
+      id="imgUrl"
+    ></textarea>
+
+    <textarea
+      class="textarea is-primary"
+      placeholder="storeName"
+      id="storeName"
+    ></textarea>
+
+    <textarea
+      class="textarea is-primary"
+      placeholder="storeArea"
+      id="storeArea"
+    ></textarea>
+
+
+
+    <p class="control">
+        <a class="button is-primary" id="modal_btn" onclick="addpost()">
+            작성 완료!
+        </a>
+    </p>
+    <p class="control">
+        <a class="button is-light" onclick="location.href='/'">
+            Cancel
+        </a>
+    </p>
+  </body>
+</html>
