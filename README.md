@@ -1,6 +1,6 @@
 # 항해 4주차 미니프로젝트2
 
-![Untitled](%E1%84%92%E1%85%A1%E1%86%BC%E1%84%92%E1%85%A2%204%E1%84%8C%E1%85%AE%E1%84%8E%E1%85%A1%20%E1%84%86%E1%85%B5%E1%84%82%E1%85%B5%E1%84%91%E1%85%B3%E1%84%85%E1%85%A9%E1%84%8C%E1%85%A6%E1%86%A8%E1%84%90%E1%85%B32%20f8cff4826e8c45eea0767d61955033d1/Untitled.png)
+![HappyTongue!](https://www.notion.so/4-2-c1629041157842c0bdc0a7b7b31cae28#f8cff4826e8c45eea0767d61955033d1)
 
 # 해피텅!
 
@@ -28,7 +28,7 @@ Frontend
 
 Figma를 이용해 와이어프레임을 설계했습니다!
 
-![와이어프레임.jpg](%E1%84%92%E1%85%A1%E1%86%BC%E1%84%92%E1%85%A2%204%E1%84%8C%E1%85%AE%E1%84%8E%E1%85%A1%20%E1%84%86%E1%85%B5%E1%84%82%E1%85%B5%E1%84%91%E1%85%B3%E1%84%85%E1%85%A9%E1%84%8C%E1%85%A6%E1%86%A8%E1%84%90%E1%85%B32%20f8cff4826e8c45eea0767d61955033d1/%EC%99%80%EC%9D%B4%EC%96%B4%ED%94%84%EB%A0%88%EC%9E%84.jpg)
+![와이어프레임](https://www.notion.so/4-2-c1629041157842c0bdc0a7b7b31cae28#f2987eca9e1746c09854305a901bfd29)
 
 [https://www.figma.com/file/uUDubcptUhos77TzoODvyP/Untitled?node-id=0%3A1](https://www.figma.com/file/uUDubcptUhos77TzoODvyP/Untitled?node-id=0%3A1)
 
