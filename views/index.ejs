@@ -83,7 +83,7 @@
     }
 
     function make_post(item, date) {
-      let htmlTemp = `<div class="columns post_board" onclick="location.href='/detail?_id=${item["_id"]}'">
+      let htmlTemp = `<div class="columns post_board" onclick="location.href='/detail?post_id=${item["_id"]}'">
                           <div class="column is-narrow">
                               <div class="box post_box" style="width: 200px;">
                                   <p class="title is-5">${item["nickname"]}</p>

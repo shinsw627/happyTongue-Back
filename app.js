@@ -9,6 +9,7 @@ const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const postsRouter = require('./routes/posts');
 
+
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(express.static("public"));
@@ -27,6 +28,14 @@ app.get("/", (req, res) => {
 
 app.get("/write", (req, res) => {
   res.render("write");
+});
+
+app.get("/detail", (req, res) => {
+  res.render("detail");
+});
+
+app.get("/correction", (req, res) => {
+  res.render("correction");
 });
 
 const handleListen = () => {

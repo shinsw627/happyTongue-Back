@@ -2,8 +2,11 @@ const express = require('express');
 const Mongoose = require('mongoose');
 const Posts = require('../models/posts');
 const User = require('../models/user');
+const commentsRouter = require('./comments')
 
 const router = express.Router();
+
+router.use('/:post_id/comments', [commentsRouter]);
 
 //게시글 조회
 router.get('/', async (req, res, next) => {
@@ -64,29 +67,39 @@ router.get('/search/:keyword', async (req, res, next) => {
   res.json({ posts: search_posts })
 })
 
-//게시물 삭제
-router.delete('/:_id', async (req, res) => {
-  const { _id } = req.params
-  const { user } = res.locals
-  const userId = user.userId
+//delete post
+router.delete('/:post_id', async (req, res) => {
+  const { post_id } = req.params
+  // const { user } = res.locals
+  // const userId = user.userId
 
-  await User.findOneAndUpdate({ userId }, { $pull: { post_id: _id } })
-  await Posts.deleteOne({ _id })
+  // await User.findOneAndUpdate({ nickname }, { $pull: { post_id: post_id } })
+  await Posts.deleteOne({ _id : post_id })
 
   res.send({ result: 'success' })
 })
 
 //게시물 수정
-router.patch('/:_id', async (req, res) => {
-  const { _id } = req.params
+router.patch('/:post_id', async (req, res) => {
+  const { post_id } = req.params
   const { user_id, title, content } = req.body
   let date = new Date().toISOString()
 
-  const ispostid = await Posts.find({ _id })
+  const ispostid = await Posts.find({ _id: post_id })
   if (ispostid.length > 0) {
-    await Posts.updateMany({ _id }, { $set: { title, content, date } })
+    await Posts.updateMany({ _id: post_id }, { $set: { title, content, date } })
   }
   res.send({ result: 'success' })
 })
+
+//detail post
+router.get('/:post_id', async (req, res) => {
+  const { post_id } = req.params
+
+  const post = await Posts.findOne({ _id: post_id })
+  res.json({ detail: post })
+})
+
+
 
 module.exports = router;

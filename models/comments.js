@@ -6,7 +6,7 @@ const commentsSchema = new Schema({
 
   nickname: {
     type: String,
-    required: true,
+    // required: true,
   },
   date: {
     type: String,
