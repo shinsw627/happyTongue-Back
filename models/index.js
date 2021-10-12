@@ -6,7 +6,7 @@ const connect = () => {
     // const dbName ="admin";
     mongoose.connect(
         // `mongodb://${id}:${password}@localhost:27017/${dbName}`,
-        'mongodb://localhost:27017/mini_2',
+        'mongodb://localhost:27017/mini2',
         {
             useNewUrlParser: true,
             ignoreUndefined: true,

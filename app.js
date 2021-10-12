@@ -2,19 +2,25 @@ const express = require("express");
 // console.log("1")
 const app = express();
 // const authmiddleware =  require("./middlewares/auth-middleware")
-
-app.use(express.urlencoded({ extended: false }));
-app.use(express.json());
-
-app.set("views", __dirname + "/views");
-app.set("view engine", "ejs");
-app.use(express.static("public"));
-
 const connect = require('./models'); 
 connect();
 
+const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/user');
+const postsRouter = require('./routes/posts');
+
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
+app.use(express.static("public"));
+
+app.use('/', [indexRouter]);
 app.use('/api/users', [usersRouter]);
+app.use('/api/posts', [postsRouter]);
+
+app.set("views", __dirname + "/views");
+app.set("view engine", "ejs");
+
+
 
 //미들웨어 확인 
 // app.get("/", authmiddleware, async (req,res) => {
@@ -23,12 +29,23 @@ app.use('/api/users', [usersRouter]);
 
 //렌더링
 app.get("/", (req, res) => {
-  // console.log("메인페이지 하하")
   res.render("index");
 });
 
+app.get("/write", (req, res) => {
+  res.render("write");
+});
+
+app.get("/detail", (req, res) => {
+  res.render("detail");
+});
+
+app.get("/correction", (req, res) => {
+  res.render("correction");
+});
+
 app.get('/signUp', (req, res) => {
-  res.render("signUp.ejs")
+  res.render("signUp")
 })
 
 app.get('/signIn',(req,res) => {
@@ -49,3 +66,4 @@ const handleListen = () => {
 // module.exports = app;
 app.listen(8080, handleListen);
 // console.log("3")
+
