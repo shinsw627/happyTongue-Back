@@ -167,7 +167,7 @@
                                                         </p>
                                                     </div>
                                                     <div class="buttons logout">
-                                                        <a class="button is-primary logout" id='test' onclick="comment_correction('${item["comment_id"]}')">
+                                                        <a class="button is-primary logout" id='test' onclick="comment_correction('${item["_id"]}')">
                                                             <strong>완료!</strong>
                                                         </a>
                                                     </div>
@@ -188,22 +188,23 @@
                             </div>`
             $("#comment_list").append(htmlTemp)
         }
-        function showComBox(test) {
+        // function showComBox(test) {
             
-            if (localStorage.getItem('token')){
-                $(`#${test}`).toggleClass('show')
-            } else {
-                alert('로그인후 사용가능합니다!')
-                window.location.href="/login"
-            }
+        //     if (localStorage.getItem('token')){
+        //         $(`#${test}`).toggleClass('show')
+        //     } else {
+        //         alert('로그인후 사용가능합니다!')
+        //         window.location.href="/login"
+        //     }
             
-        }
+        // }
 
         function comment_correction(test) {
             const a =$(`#${test}`).find('input').attr('id')
-            if (!$(`#${a}`).val()) {
-                alert('내용을 입력해주세요!')
-            } else {
+            // if (!$(`#${a}`).val()) {
+            //     alert('내용을 입력해주세요!')
+            // } else {
+                console.log(test)
                 $.ajax({
                 type: "PATCH",
                 url: `/api/posts/${post_id}/comments/${test}`,
@@ -218,7 +219,7 @@
                     if (status == 401) {
                         alert('로그인이 필요합니다.')
                     }
-                    window.location.href = "/login";
+                    // window.location.href = "/login";
                 },
                 success: function (response) {
                     if (response["result"] === "success") {
@@ -230,22 +231,22 @@
                 }
             });
             }
-        }
+        // }
         
         function delete_comment(test) {
-            if (!localStorage.getItem('token')) {
-                alert('로그인후 사용해주세요!')
-            } else if (confirm("정말 삭제 하시겠습니까?")==false) {
+            // if (!localStorage.getItem('token')) {
+            //     alert('로그인후 사용해주세요!')
+            if (confirm("정말 삭제 하시겠습니까?")==false) {
                 return;
             } else {
                 $.ajax({
                 type: "DELETE",
-                url: `/api/comments/delete/${post_id}`,
+                url: `/api/posts/${post_id}/comments/${test}`,
                 // headers: {
                 //     authorization: `Bearer ${localStorage.getItem('token')}`,
                 // },
                 data: {
-                    comment_id: test,
+                    
                 },
                 success: function (response) {
                     if (response["result"] == "success") {

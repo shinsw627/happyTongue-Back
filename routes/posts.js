@@ -6,7 +6,7 @@ const commentsRouter = require('./comments')
 
 const router = express.Router();
 
-router.use('/:post_id/comments', [commentsRouter]);
+router.use('/', [commentsRouter]);
 
 //게시글 조회
 router.get('/', async (req, res, next) => {

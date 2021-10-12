@@ -7,10 +7,10 @@ const User = require('../models/user')
 const router = express.Router()
 
 //댓글 조회
-router.get('/', async (req, res) => {
+router.get('/:post_id/comments', async (req, res) => {
     const { post_id } = req.params
-  
-    const comments = await Posts.findOne({ post_id }).populate({
+    console.log(post_id)
+    const comments = await Posts.findOne({ _id: post_id }).populate({
       path: 'comment_id',
       options: { sort: { date: -1 } },
     })
@@ -19,7 +19,7 @@ router.get('/', async (req, res) => {
 })
 
 //댓글 작성
-router.post('/', async (req, res) => {
+router.post('/:post_id/comments', async (req, res) => {
     const {post_id} = req.params
     console.log(post_id)
     const { content } = req.body
@@ -49,37 +49,38 @@ router.post('/', async (req, res) => {
 })
 
 //댓글 수정 
-// router.patch('/comment_id', async (req, res) => {
-//     const { post_id, comment_id } = req.params
-//     const { content } = req.body
-//     const { user } = res.locals
-//     const userId = user.userId
-//     const c_userId = await Comments.findOne({ _id: comment_id })
-//     let date = new Date().toISOString()
-  
-//     if (c_userId.userId === userId) {
-//       await Comments.updateMany({ _id: comment_id }, { $set: { content, date } })
-//       res.send({ result: 'success' })
-//     } else {
-//       res.send({ msg: '내 댓글이 아닙니다.' })
-//     }
-// })
-
-//댓글 삭제
-// router.delete('/:comment_id', async (req, res) => {
-//     const { post_id, comment_id } = req.params
-    // const { comment_id } = req.body
+router.patch('/:post_id/comments/:comment_id', async (req, res) => {
+    const { post_id, comment_id } = req.params
+    console.log(post_id, comment_id)
+    const { content } = req.body
     // const { user } = res.locals
     // const userId = user.userId
     // const c_userId = await Comments.findOne({ _id: comment_id })
+    let date = new Date().toISOString()
   
     // if (c_userId.userId === userId) {
-      // await Posts.findOneAndUpdate({ _id }, { $pull: { comment_id: comment_id } })
-      // await Comments.deleteOne({ comment_id })
-      // res.send({ result: 'success' })
+      await Comments.updateMany({ _id: comment_id }, { $set: { content, date } })
+      res.send({ result: 'success' })
     // } else {
     //   res.send({ msg: '내 댓글이 아닙니다.' })
     // }
-// })
+})
+
+//댓글 삭제
+router.delete('/:post_id/comments/:comment_id', async (req, res) => {
+    const { post_id, comment_id } = req.params
+    // const { comment_id } = req.body
+    // const { user } = res.locals
+    // const userId = user.userId
+    const c_userId = await Comments.findOne({ _id: comment_id })
+  
+    // if (c_userId.userId === userId) {
+      await Posts.findOneAndUpdate({ _id: post_id }, { $pull: { comment_id: comment_id } })
+      await Comments.deleteOne({ comment_id })
+      res.send({ result: 'success' })
+    // } else {
+    //   res.send({ msg: '내 댓글이 아닙니다.' })
+    // }
+})
 
 module.exports = router;
