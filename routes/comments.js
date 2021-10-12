@@ -49,21 +49,21 @@ router.post('/', async (req, res) => {
 })
 
 //댓글 수정 
-router.patch('/comment_id', async (req, res) => {
-    const { post_id, comment_id } = req.params
-    const { content } = req.body
-    const { user } = res.locals
-    const userId = user.userId
-    const c_userId = await Comments.findOne({ _id: comment_id })
-    let date = new Date().toISOString()
+// router.patch('/comment_id', async (req, res) => {
+//     const { post_id, comment_id } = req.params
+//     const { content } = req.body
+//     const { user } = res.locals
+//     const userId = user.userId
+//     const c_userId = await Comments.findOne({ _id: comment_id })
+//     let date = new Date().toISOString()
   
-    if (c_userId.userId === userId) {
-      await Comments.updateMany({ _id: comment_id }, { $set: { content, date } })
-      res.send({ result: 'success' })
-    } else {
-      res.send({ msg: '내 댓글이 아닙니다.' })
-    }
-})
+//     if (c_userId.userId === userId) {
+//       await Comments.updateMany({ _id: comment_id }, { $set: { content, date } })
+//       res.send({ result: 'success' })
+//     } else {
+//       res.send({ msg: '내 댓글이 아닙니다.' })
+//     }
+// })
 
 //댓글 삭제
 // router.delete('/:comment_id', async (req, res) => {
