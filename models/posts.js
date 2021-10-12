@@ -4,10 +4,10 @@ const { Schema } = mongoose;
 const postsSchema = new Schema({
   _id: Schema.Types.ObjectId,
 
-  // nickname: {
-  //   type: String,
-  //   required: true,
-  // },
+  nickname: {
+    type: String,
+    required: true,
+  },
   title: {
     type: String,
     required: true,

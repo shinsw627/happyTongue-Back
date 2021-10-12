@@ -22,9 +22,9 @@
       $.ajax({
         type: "POST",
         url: "/api/posts",
-        // headers: {
-        //   authorization: `Bearer ${localStorage.getItem("token")}`,
-        // },
+        headers: {
+          authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
         data: {
           title: $("#title").val(),
           content: $("#content").val(),

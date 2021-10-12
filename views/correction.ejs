@@ -84,9 +84,9 @@
         $.ajax({
             type: "PATCH",
             url: `/api/posts/${post_id}`,
-            // headers: {
-            //     authorization: `Bearer ${localStorage.getItem('token')}`,
-            // },
+            headers: {
+                authorization: `Bearer ${localStorage.getItem('token')}`,
+            },
             data: {
                 title: $("#title").val(),
                 content: $("#content").val(),
@@ -111,9 +111,9 @@
         $.ajax({
             type: "DELETE",
             url: `/api/posts/${post_id}`,
-            // headers: {
-            //     authorization: `Bearer ${localStorage.getItem('token')}`,
-            // },
+            headers: {
+                authorization: `Bearer ${localStorage.getItem('token')}`,
+            },
             data: {},
             error: function (xhr, status, error) {
                 if (status == 401) {

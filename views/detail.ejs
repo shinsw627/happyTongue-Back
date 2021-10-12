@@ -139,7 +139,7 @@
                                     <div class="media-content">
                                         <div class="content">
                                             <p>
-                                                <strong id="author">${item["userId"]}</strong> <small>${date}</small> 
+                                                <strong id="author">${item["nickname"]}</strong> <small>${date}</small> 
                                                 <br>
                                                 ${item["content"]}
                                             </p>
@@ -161,7 +161,7 @@
                                                 <div class="dropdown-item">
                                                     <div class="content">
                                                         <p>
-                                                            <strong>${item["userId"]}</strong> <small>${date}</small> 
+                                                            <strong>${item["nickname"]}</strong> <small>${date}</small> 
                                                             <br>
                                                             <input class="input is-primary" type="text" style="width:400px;" placeholder="${item["content"]}" id="${item["comment_id"]}1">
                                                         </p>
@@ -208,9 +208,9 @@
                 $.ajax({
                 type: "PATCH",
                 url: `/api/posts/${post_id}/comments/${test}`,
-                // headers: {
-                //     authorization: `Bearer ${localStorage.getItem('token')}`,
-                // },
+                headers: {
+                    authorization: `Bearer ${localStorage.getItem('token')}`,
+                },
                 data: {
                     comment_id: test,
                     content: $(`#${a}`).val()
@@ -242,16 +242,16 @@
                 $.ajax({
                 type: "DELETE",
                 url: `/api/posts/${post_id}/comments/${test}`,
-                // headers: {
-                //     authorization: `Bearer ${localStorage.getItem('token')}`,
-                // },
+                headers: {
+                    authorization: `Bearer ${localStorage.getItem('token')}`,
+                },
                 data: {
                     
                 },
                 success: function (response) {
                     if (response["result"] == "success") {
                         alert("삭제 완료!");
-                        window.location.href =`/detail?_id=${_id}`;
+                        window.location.href = `/detail?post_id=${post_id}`;
                     } else {
                         alert(response["msg"])
                     }
@@ -272,9 +272,9 @@
                 $.ajax({
                 type: "POST",
                 url: `/api/posts/${post_id}/comments`,
-                // headers: {
-                //     authorization: `Bearer ${localStorage.getItem('token')}`,
-                // },
+                headers: {
+                    authorization: `Bearer ${localStorage.getItem('token')}`,
+                },
                 data: {
                     content: $("#comment").val(),
                 },
@@ -287,7 +287,7 @@
                 success: function (response) {
                     if (response["result"] === "success") {
                         alert("저장 완료!");
-                        window.location.href = `/detail?_id=${_id}`;
+                        window.location.href = `/detail?post_id=${post_id}`;
                     } else {
                         alert("너 뭐냐?")
                     }

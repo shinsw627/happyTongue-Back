@@ -3,6 +3,7 @@ const Mongoose = require('mongoose');
 const Posts = require('../models/posts');
 const User = require('../models/user');
 const commentsRouter = require('./comments')
+const authMiddleware = require('../middlewares/auth-middleware')
 
 const router = express.Router();
 
@@ -24,18 +25,19 @@ router.get('/', async (req, res, next) => {
 });
 
 //게시글 작성
-router.post('/', async (req, res) => {
+router.post('/', authMiddleware, async (req, res) => {
   const { title, content, imgUrl, storeName, storeArea } = req.body;
-  // const { user } = res.locals;
-  // const nickname = user.userId;
+  const { user } = res.locals;
+  console.log(user)
+  const nickname = user.nickname;
 
   let date = new Date().toISOString();
   const _id = new Mongoose.Types.ObjectId();
-  // await User.findOneAndUpdate({ nickname }, { $push: { postId: _id } });
+  await User.findOneAndUpdate({ nickname }, { $push: { postId: _id } });
   console.log(imgUrl, storeName, storeArea)
   await Posts.create({
     _id,
-    // nickname,
+    nickname,
     title,
     content,
     imgUrl,
@@ -68,25 +70,28 @@ router.get('/search/:keyword', async (req, res, next) => {
 })
 
 //delete post
-router.delete('/:post_id', async (req, res) => {
+router.delete('/:post_id', authMiddleware, async (req, res) => {
   const { post_id } = req.params
-  // const { user } = res.locals
-  // const userId = user.userId
+  const { user } = res.locals
+  const nickname = user.nickname
 
-  // await User.findOneAndUpdate({ nickname }, { $pull: { post_id: post_id } })
+  await User.findOneAndUpdate({ nickname }, { $pull: { post_id: post_id } })
   await Posts.deleteOne({ _id : post_id })
 
   res.send({ result: 'success' })
 })
 
 //게시물 수정
-router.patch('/:post_id', async (req, res) => {
+router.patch('/:post_id', authMiddleware, async (req, res) => {
   const { post_id } = req.params
-  const { user_id, title, content } = req.body
+  const { title, content } = req.body
+  const { user } = res.locals
+  const nickname = user.nickname
   let date = new Date().toISOString()
 
-  const ispostid = await Posts.find({ _id: post_id })
-  if (ispostid.length > 0) {
+  const [ispostid] = await Posts.find({ _id: post_id })
+  console.log(ispostid, nickname, user)
+  if (ispostid.nickname == nickname) {
     await Posts.updateMany({ _id: post_id }, { $set: { title, content, date } })
   }
   res.send({ result: 'success' })
