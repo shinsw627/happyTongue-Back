@@ -1,17 +1,25 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose')
 
 const connect = () => {
-  mongoose
-    .connect('mongodb://localhost:27017/mini2', {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-      ignoreUndefined: true,
-    })
-    .catch((err) => console.log(err));
-};
+    // const id = 'test',
+    // const password = "test"
+    // const dbName ="admin";
+    mongoose.connect(
+        // `mongodb://${id}:${password}@localhost:27017/${dbName}`,
+        'mongodb://localhost:27017/mini_2',
+        {
+            useNewUrlParser: true,
+            ignoreUndefined: true,
+        },
+        (error) => {
+            if (error) console.log('Mongo DB Connect Error')
+            else console.log('Mongo DB connect Success')
+        }
+    )
+}
 
 mongoose.connection.on('error', (err) => {
-  console.error('몽고디비 연결 에러', err);
-});
+    console.error('Mongo DB Connect Error', err)
+})
 
-module.exports = connect;
+module.exports = connect

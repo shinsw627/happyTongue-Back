@@ -1,27 +1,27 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose')
+const { Schema } = mongoose
 
-const { Schema } = mongoose;
-const usersSchema = new Schema({
-  nickname: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  email: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  password: {
-    type: Number,
-    required: true,
-  },
-  post_id: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: 'posts',
+const UserSchema = new Schema({
+    nickname: {
+        type: String,
+        required: true,
     },
-  ],
-});
+    email: {
+        type:String,
+        required: true,
+    },
+    password: {
+        type: String,
+        required: true,
+    },
+})
 
-module.exports = mongoose.model('users', usersSchema);
+UserSchema.virtual('userId').get(function () {
+    return this._id.toHexString()
+})
+UserSchema.set('toJSON', {
+    virtuals: true,
+})
+
+module.exports = mongoose.model('User', UserSchema)
+
