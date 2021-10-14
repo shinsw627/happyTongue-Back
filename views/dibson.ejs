@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script
+      src="https://code.jquery.com/jquery-3.5.1.js"
+      integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+      integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.4.0/socket.io.js"></script>
+
+    <title>Document</title>
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css"
+    />
+  </head>
+  <script>
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const keyword = urlParams.get("keyword");
+
+    $(document).ready(function () {
+      get_likeposts();
+      // loginState()
+      // $("#postsNum").text(posts.length)
+    });
+    function get_likeposts() {
+      $("#postsList").empty();
+
+      $.ajax({
+        type: "GET",
+        url: "/api/posts/dibsOn",
+        headers: {
+            authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        data: {},
+        success: function (response) {
+          let posts = response["posts"];
+          // $("#postsNum").append(posts.length);
+          for (let i = 0; i < posts.length; i++) {
+            let time_post = new Date(posts[i]["date"]);
+
+            let time_before = time2str(time_post);
+
+            make_post(posts[i], time_before);
+          }
+        },
+      });
+    }
+
+    function time2str(day) {
+      let today = new Date();
+      let time = (today - day) / 1000 / 60;
+
+      if (time < 60) {
+        return parseInt(time) + "분 전";
+      }
+      time = time / 60;
+      if (time < 24) {
+        return parseInt(time) + "시간 전";
+      }
+      time = time / 24;
+      if (time < 7) {
+        return parseInt(time) + "일 전";
+      }
+      return (
+        day.getFullYear() +
+        "년" +
+        day.getMonth() +
+        1 +
+        "월" +
+        day.getDate() +
+        "일"
+      );
+    }
+
+    function make_post(item, date) {
+      let htmlTemp = `<div class="columns post_board" onclick="location.href='/detail?post_id=${item["_id"]}'">
+                          <div class="column is-narrow">
+                              <div class="box post_box" style="width: 200px;">
+                                  <p class="title is-5">${item["nickname"]}</p>
+                                  <p class="subtitle">${date}</p>
+                              </div>
+                          </div>
+                          <div class="column">
+                              <div class="box post_box">
+                                  <p class="title is-5" id="title">${item["title"]}</p>
+                                  <p class="subtitle">"${item["content"]}"</p>
+                              </div>
+                          </div>
+                      </div>`;
+      $("#postsList").append(htmlTemp);
+    }
+
+    // function get_search() {
+    //         $("#postsList").empty()
+    //         $.ajax({
+    //             type: "GET",
+    //             url: `/api/posts/search/${keyword}`,
+    //             data: {},
+    //             error: function (xhr, status, error) {
+                    
+    //                     alert("검색어가 포함된 게시물이 없습니다.");
+                    
+    //                 window.location.href = "/";
+    //             },
+    //             success: function (response) {
+    //                 let posts = response["posts"]
+
+    //                 if (posts.length < 1) {
+    //                     alert("검색과 일치하는 내용이 없습니다.")
+    //                     // window.location.href = "/";
+    //                 } else {
+
+    //                     for (let i = 0; i < posts.length; i++) {
+    //                         let time_post = new Date(posts[i]["date"])
+
+    //                         let time_before = time2str(time_post)
+    //                         make_post(posts[i], time_before)
+
+    //                     }
+    //                 }
+
+    //             }
+    //         })
+    // }
+    
+    // function search(callback) {
+    //         const keyword = $("#search_word").val()
+    //         window.location.href = `/?keyword=${keyword}`
+    //         alert('이동!')
+    //         console.log(keyword)
+    //         callback();
+    // }
+
+  </script>
+  <body>
+    <h1>hello world</h1>
+
+    <nav class="level">
+      <!-- Left side -->
+      <div class="level-left">
+          <div class="level-item">
+              <div class="control is-expanded">
+                  <div class="select is-fullwidth">
+                      <select id="search_key">
+                          <option value=" ">전체</option>
+                          <!-- <option value="title">제목</option>
+                          <option value="user_id">ID</option>
+                          <option value="date">날짜</option> -->
+                      </select>
+                  </div>
+              </div>
+          </div>
+          <div class="level-item">
+              <div class="field has-addons">
+                  <p class="control">
+                      <input class="input" id="search_word" type="text" placeholder="Find a post">
+                  </p>
+                  <p class="control">
+                      <button class="button" onclick="search(get_search())">
+                          Search
+                      </button>
+                  </p>
+              </div>
+          </div>
+      </div>
+    <p>
+      <div id="postsList"></div>
+    </p>
+    
+  </body>
+</html>

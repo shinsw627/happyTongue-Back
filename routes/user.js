@@ -72,7 +72,7 @@ router.post('/auth', async (req, res) => {
     const Id = user.userId
     // console.log("하이",user.userId)
     res.json({
-        token, Id
+        token
     }) //토큰이 안감
 })
 // console.log("6")

@@ -1,5 +1,7 @@
 const express = require("express");
-// const cors = require("cors");
+const http = require("http");
+const cors = require("cors");
+const server = http.createServer(app);
 // console.log("1")
 const app = express();
 // const authmiddleware = require("./middlewares/auth-middleware")
@@ -13,7 +15,7 @@ const postsRouter = require('./routes/posts');
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(express.static("public"));
-// app.use(cors());
+app.use(cors());
 
 app.use('/', [indexRouter]);
 app.use('/api/users', [usersRouter]);
@@ -42,6 +44,14 @@ app.get("/detail", (req, res) => {
   res.render("detail");
 });
 
+app.get("/myinfo", (req, res) => {
+  res.render("myinfo");
+});
+
+app.get("/dibson", (req, res) => {
+  res.render("dibson");
+});
+
 app.get("/correction", (req, res) => {
   res.render("correction");
 });
@@ -66,6 +76,6 @@ const handleListen = () => {
 };
 // console.log("2")
 // module.exports = app;
-app.listen(8080, handleListen);
+server.listen(8080, handleListen);
 // console.log("3")
 

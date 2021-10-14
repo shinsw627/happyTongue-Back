@@ -14,6 +14,18 @@ const UserSchema = new Schema({
         type: String,
         required: true,
     },
+    post_id: [
+        {
+        type: Schema.Types.ObjectId,
+        ref: 'posts' 
+        }
+    ],
+    like_post: [
+        {
+        type: Schema.Types.ObjectId,
+        ref: 'posts' 
+        }
+    ],
 })
 
 UserSchema.virtual('userId').get(function () {

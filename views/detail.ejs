@@ -55,6 +55,7 @@
             $("#postTitle").val(post["title"]);
             $("#postNickname").val(post["nickname"]);
             $("#postContent").text(post["content"]);
+            $("#likes").append(response["likes"]);
             if (likeState) {
               $("#heart").addClass("fas");
               $("#heart").addClass("O")
@@ -425,7 +426,7 @@
           <div class="control">
             <textarea class="textarea" id="postContent"></textarea>
             <i class="fas fa-heart" id="heart" onclick="post_like()"></i>
-            <i class="far fa-heart" id="heart" onclick="post_like()"></i>
+            <div id=likes></div>
           </div>
           <br />
           <div class="field is-grouped is-grouped-right">
