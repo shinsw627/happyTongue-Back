@@ -1,7 +1,8 @@
 const express = require("express");
+// const cors = require("cors");
 // console.log("1")
 const app = express();
-// const authmiddleware =  require("./middlewares/auth-middleware")
+// const authmiddleware = require("./middlewares/auth-middleware")
 const connect = require('./models'); 
 connect();
 
@@ -12,6 +13,7 @@ const postsRouter = require('./routes/posts');
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(express.static("public"));
+// app.use(cors());
 
 app.use('/', [indexRouter]);
 app.use('/api/users', [usersRouter]);
@@ -27,7 +29,7 @@ app.set("view engine", "ejs");
 //   res.status(400).send({});
 // })
 
-//렌더링
+// 렌더링
 app.get("/", (req, res) => {
   res.render("index");
 });

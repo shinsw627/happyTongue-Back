@@ -69,9 +69,10 @@ router.post('/auth', async (req, res) => {
         return
     }
     const token = jwt.sign({userId: user.userId}, "team3_miniproject") //시크릿키 주의!!!
-    // console.log("하이",token)
+    const Id = user.userId
+    // console.log("하이",user.userId)
     res.json({
-        token,
+        token, Id
     }) //토큰이 안감
 })
 // console.log("6")
@@ -84,10 +85,9 @@ router.get("/me", authMiddleware, async (req,res) => {
     res.send({
         user: {
             email: user.email,
-            nickname: user.nickname,
         }
     })
-    })
+})
 
 
 module.exports = router;

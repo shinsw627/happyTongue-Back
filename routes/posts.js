@@ -12,12 +12,12 @@ router.use('/', [commentsRouter]);
 //게시글 조회
 router.get('/', async (req, res, next) => {
   try {
-    const posts = await Posts.find({}).sort('-date');
-
+    const posts = await Posts.find({}).sort('-date').limit(20);
+    
     for (let i = 0; i < posts.length; i++) {
       posts[i].update({ _id: posts[i]['_id'].toString() });
     }
-
+    
     res.json({ posts: posts });
   } catch (err) {
     next(err);
@@ -28,13 +28,12 @@ router.get('/', async (req, res, next) => {
 router.post('/', authMiddleware, async (req, res) => {
   const { title, content, imgUrl, storeName, storeArea } = req.body;
   const { user } = res.locals;
-  console.log(user)
   const nickname = user.nickname;
 
   let date = new Date().toISOString();
   const _id = new Mongoose.Types.ObjectId();
-  await User.findOneAndUpdate({ nickname }, { $push: { postId: _id } });
-  console.log(imgUrl, storeName, storeArea)
+  // await User.findOneAndUpdate({ nickname }, { $push: { postId: _id } });
+  
   await Posts.create({
     _id,
     nickname,
@@ -53,7 +52,6 @@ router.post('/', authMiddleware, async (req, res) => {
 router.get('/search/:keyword', async (req, res, next) => {
   const { keyword } = req.params
   const keywords = keyword.split(' ')
-  console.log(keyword)
   const list_keywords = []
   for (let i = 0; i < keywords.length; i++) {
     list_keywords.push({
@@ -63,7 +61,6 @@ router.get('/search/:keyword', async (req, res, next) => {
       ],
     })
   }
-  console.log(list_keywords)
   const search_posts = await Posts.find({ $or: list_keywords }).sort('-date')
 
   res.json({ posts: search_posts })
@@ -98,13 +95,51 @@ router.patch('/:post_id', authMiddleware, async (req, res) => {
 })
 
 //detail post
-router.get('/:post_id', async (req, res) => {
+router.get('/:post_id', authMiddleware, async (req, res) => {
   const { post_id } = req.params
+  const { user } = res.locals
+  const userId = user.userId
+  let likeState = false;
 
-  const post = await Posts.findOne({ _id: post_id })
-  res.json({ detail: post })
+  const posts = await Posts.findOne({ _id: post_id })
+  
+  const postlike = posts.like_id
+  for (let i = 0; i < postlike.length; i++) {
+    if (postlike[i].toString()==userId) {
+      console.log(postlike[i].toString())
+      likeState = true
+    }   
+  }
+   
+  res.json({ detail: posts, likeState})
 })
 
-
+//like post
+router.post('/:post_id', authMiddleware, async (req, res) => {
+  const {post_id} = req.params
+  const {likeState} = req.body
+  
+  
+  const { user } = res.locals
+  const userId = user.userId
+  
+  if (likeState == 'false') {
+    try {
+      await Posts.findOneAndUpdate({ _id: post_id },{ $push: { like_id: userId }});
+      res.status(200).send({msg:'success'})
+    } catch (err) {
+      
+      res.status(400).send({msg:'관라자에게 문의하세요!'});
+    }
+  } else {
+    try {
+      await Posts.findOneAndUpdate({ _id: post_id }, { $pull: { like_id: userId }});
+      res.status(200).send({msg:'success'})
+    } catch (err) {
+      
+      res.status(400).send({msg:'관리자에게 문의하세요!'})
+    }
+  }  
+})
 
 module.exports = router;

@@ -10,7 +10,6 @@ const router = express.Router()
 //댓글 조회
 router.get('/:post_id/comments', async (req, res) => {
     const { post_id } = req.params
-    console.log(post_id)
     const comments = await Posts.findOne({ _id: post_id }).populate({
       path: 'comment_id',
       options: { sort: { date: -1 } },
@@ -22,7 +21,6 @@ router.get('/:post_id/comments', async (req, res) => {
 //댓글 작성
 router.post('/:post_id/comments', authMiddleware, async (req, res) => {
     const {post_id} = req.params
-    console.log(post_id)
     const { content } = req.body
     const { user } = res.locals
     const nickname = user.nickname
@@ -31,28 +29,20 @@ router.post('/:post_id/comments', authMiddleware, async (req, res) => {
     try {
       const _id = new Mongoose.Types.ObjectId()
       await Comments.create({ _id, nickname, content, date })
-      // await User.findOneAndUpdate(
-      //   { nickname: nickname },
-      //   { $push: { comment_id: _id } }
-      // )
-      await Posts.findOneAndUpdate(
-        { _id: post_id },
-        { $push: { comment_id: _id } }
-      )
+      
+      await Posts.findOneAndUpdate({ _id: post_id },{ $push: { comment_id: _id }})
     } catch (err) {
       console.error(err)
-      console.log('여기?')
-      // next(err);
+      
       res.send({ result: 'fail' })
     }
-    console.log('요기?')
+    
     res.send({ result: 'success' })
 })
 
 //댓글 수정 
 router.patch('/:post_id/comments/:comment_id', authMiddleware, async (req, res) => {
     const { post_id, comment_id } = req.params
-    console.log(post_id, comment_id)
     const { content } = req.body
     const { user } = res.locals
     const nickname = user.nickname

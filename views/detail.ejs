@@ -1,145 +1,151 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://code.jquery.com/jquery-3.5.1.js"
-        integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
-        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
-        crossorigin="anonymous"></script>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script
+      src="https://code.jquery.com/jquery-3.5.1.js"
+      integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+      integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+      crossorigin="anonymous"
+    ></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.4.0/socket.io.js"></script>
-    
+
+    <script
+      src="https://use.fontawesome.com/releases/v5.15.4/js/all.js"
+      data-auto-a11y="true"
+    ></script>
+
     <title>나의 첫 vlog</title>
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css" />
-    <script src = "https://use.fontawesome.com/releases/v5.1.0/js/all.js"></script>
-
-    
-    
-    
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css"
+    />
+    <script src="https://use.fontawesome.com/releases/v5.1.0/js/all.js"></script>
 
     <script>
-        const queryString = window.location.search;
-        const urlParams = new URLSearchParams(queryString);
-        const post_id = urlParams.get("post_id");
+      const queryString = window.location.search;
+      const urlParams = new URLSearchParams(queryString);
+      const post_id = urlParams.get("post_id");
 
-        $(document).ready(function () {
-            get_detail()
-            get_comments()
-            
-        })
-           
-        function get_detail() {
-            $.ajax({
-                type: "GET",
-                url: `/api/posts/${post_id}`,
-                data: {},
-                success: function (response) {
-                    let post = response["detail"]
-                    make_detail(post)
+      $(document).ready(function () {
+        get_detail();
+        get_comments();
+      });
 
-
-                }
-            })
-        }
-        function post_correction(test) {
-            // if (!localStorage.getItem('token')){
-            //     alert('로그인후 사용가능합니다!')
-            //     window.location.href="/login"
-            // } else {
-                $.ajax({
-                type: 'GET',
-                url: '/api/users/me',
-                // headers: {
-                // authorization: `Bearer ${localStorage.getItem('token')}`,
-                // },
-                success: function (response) {
-                    if (response['user'] !== test) {
-                        alert('내 게시물이 아닙니다.')
-                    } else {
-                        window.location.href=`/posts/correction?_id=${post_id}`
-                    }                
-                },
-            })
-            // }
-        }
-
-        function make_detail(item) {
-            let htmlTemp = `<div class="control">
-                                <input class="input" type="text" value="${item["title"]}" readonly>
-                            </div>
-                            <br>
-                            <div class="control">
-                                <input class="input" type="text" value="${item["nickname"]}" readonly>
-                            </div>
-                            <br>
-                            <div class="control">
-                                <textarea class="textarea" readonly>${item["content"]}</textarea>
-                            </div>
-                            <br>
-                            <div class="field is-grouped is-grouped-right">
-                                <p class="control">
-                                    <a class="button is-primary login" id="modal_btn" onclick="location.href='/correction?post_id=${post_id}'">
-                                        수정/삭제
-                                    </a>
-                                </p>
-                                <p class="control">
-                                    <a class="button is-light login" onclick="location.href='/'">
-                                        Cancel
-                                    </a>
-                                </p>
-                            </div>`
-            $("#post_detail").append(htmlTemp)
-        }
-        function time2str(day) {
-
-            let today = new Date()
-            let time = (today - day) / 1000 / 60;
-
-            if (time < 60) {
-                return parseInt(time) + "분 전"
+      function get_detail() {
+        $.ajax({
+          type: "GET",
+          url: `/api/posts/${post_id}`,
+          headers: {
+            authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          data: {},
+          success: function (response) {
+            let post = response["detail"];
+            let likeState = response["likeState"];
+            console.log(likeState)
+            $("#postTitle").val(post["title"]);
+            $("#postNickname").val(post["nickname"]);
+            $("#postContent").text(post["content"]);
+            if (likeState) {
+              $("#heart").addClass("fas");
+              $("#heart").addClass("O")
+              $("#heart").removeClass("far");
+              $("#heart").removeClass("X");
+            } else {
+              $("#heart").addClass("far");
+              $("#heart").addClass("X");
+              $("#heart").removeClass("fas");
+              $("#heart").removeClass("O");
             }
-            time = time / 60;
-            if (time < 24) {
-                return parseInt(time) + "시간 전"
+          },
+        });
+      }
+      function post_correction(test) {
+        // if (!localStorage.getItem('token')){
+        //     alert('로그인후 사용가능합니다!')
+        //     window.location.href="/login"
+        // } else {
+        $.ajax({
+          type: "GET",
+          url: "/api/users/me",
+          // headers: {
+          // authorization: `Bearer ${localStorage.getItem('token')}`,
+          // },
+          success: function (response) {
+            if (response["user"] !== test) {
+              alert("내 게시물이 아닙니다.");
+            } else {
+              window.location.href = `/posts/correction?_id=${post_id}`;
             }
-            time = time / 24;
-            if (time < 7) {
-                return parseInt(time) + "일 전"
+          },
+        });
+        // }
+      }
+
+      function time2str(day) {
+        let today = new Date();
+        let time = (today - day) / 1000 / 60;
+
+        if (time < 60) {
+          return parseInt(time) + "분 전";
+        }
+        time = time / 60;
+        if (time < 24) {
+          return parseInt(time) + "시간 전";
+        }
+        time = time / 24;
+        if (time < 7) {
+          return parseInt(time) + "일 전";
+        }
+        return (
+          day.getFullYear() +
+          "년" +
+          day.getMonth() +
+          1 +
+          "월" +
+          day.getDate() +
+          "일"
+        );
+      }
+
+      function get_comments() {
+        $.ajax({
+          type: "GET",
+          url: `/api/posts/${post_id}/comments`,
+          headers: {
+            userId: `${localStorage.getItem("Id")}`,
+          },
+          data: {},
+          success: function (response) {
+            const comments = response["detail"];
+            const likeState = response["likeState"];
+
+            $("#comment_count").append(comments.length);
+            for (let i = 0; i < comments.length; i++) {
+              let time_post = new Date(comments[i]["date"]);
+              let time_before = time2str(time_post);
+              make_comments(comments[i], time_before);
             }
-            return day.getFullYear() + '년' + day.getMonth() + 1 + '월' + day.getDate() + '일'
-        }
-
-
-        function get_comments() {
-            $.ajax({
-                type: "GET",
-                url: `/api/posts/${post_id}/comments`,
-                data: {},
-                success: function (response) {
-                    const comments = response['detail']
-                                                           
-                    $("#comment_count").append(comments.length)
-                    for (let i = 0; i < comments.length; i++) {
-                        let time_post = new Date(comments[i]["date"])
-                        let time_before = time2str(time_post)
-                        make_comments(comments[i], time_before)
-                    };
-                }
-            })
-        }
-        function make_comments(item, date) {
-            let htmlTemp = `<div class="box">
+          },
+        });
+      }
+      function make_comments(item, date) {
+        let htmlTemp = `<div class="box">
                                 <article class="media">
 
                                     <div class="media-content">
                                         <div class="content">
                                             <p>
-                                                <strong id="author">${item["nickname"]}</strong> <small>${date}</small> 
+                                                <strong id="author">${item["nickname"]}</strong> <small>${date}</small>
                                                 <br>
                                                 ${item["content"]}
                                             </p>
@@ -151,7 +157,7 @@
                                                         <i class="fas fa-retweet" aria-hidden="true"></i>
                                                     </span>
                                                 </a>
-                                                
+
                                             </div>
                                         </nav>
                                     </div>
@@ -161,7 +167,7 @@
                                                 <div class="dropdown-item">
                                                     <div class="content">
                                                         <p>
-                                                            <strong>${item["nickname"]}</strong> <small>${date}</small> 
+                                                            <strong>${item["nickname"]}</strong> <small>${date}</small>
                                                             <br>
                                                             <input class="input is-primary" type="text" style="width:400px;" placeholder="${item["content"]}" id="${item["comment_id"]}1">
                                                         </p>
@@ -184,228 +190,283 @@
                                         </a>
                                     </div>
                                 </article>
-                                
-                            </div>`
-            $("#comment_list").append(htmlTemp)
-        }
-        // function showComBox(test) {
-            
-        //     if (localStorage.getItem('token')){
-        //         $(`#${test}`).toggleClass('show')
-        //     } else {
-        //         alert('로그인후 사용가능합니다!')
-        //         window.location.href="/login"
-        //     }
-            
-        // }
 
-        function comment_correction(test) {
-            const a =$(`#${test}`).find('input').attr('id')
-            // if (!$(`#${a}`).val()) {
-            //     alert('내용을 입력해주세요!')
-            // } else {
-                console.log(test)
-                $.ajax({
-                type: "PATCH",
-                url: `/api/posts/${post_id}/comments/${test}`,
-                headers: {
-                    authorization: `Bearer ${localStorage.getItem('token')}`,
-                },
-                data: {
-                    comment_id: test,
-                    content: $(`#${a}`).val()
-                },
-                error: function (xhr, status, error) {
-                    if (status == 401) {
-                        alert('로그인이 필요합니다.')
-                    }
-                    // window.location.href = "/login";
-                },
-                success: function (response) {
-                    if (response["result"] === "success") {
-                        alert("변경 완료!");
-                        window.location.href = `/detail?post_id=${post_id}`;
-                    } else {
-                        alert(response['msg'])
-                    }
-                }
-            });
+                            </div>`;
+        $("#comment_list").append(htmlTemp);
+      }
+      // function showComBox(test) {
+
+      //     if (localStorage.getItem('token')){
+      //         $(`#${test}`).toggleClass('show')
+      //     } else {
+      //         alert('로그인후 사용가능합니다!')
+      //         window.location.href="/login"
+      //     }
+
+      // }
+
+      function comment_correction(test) {
+        const a = $(`#${test}`).find("input").attr("id");
+        // if (!$(`#${a}`).val()) {
+        //     alert('내용을 입력해주세요!')
+        // } else {
+        console.log(test);
+        $.ajax({
+          type: "PATCH",
+          url: `/api/posts/${post_id}/comments/${test}`,
+          headers: {
+            authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          data: {
+            comment_id: test,
+            content: $(`#${a}`).val(),
+          },
+          error: function (xhr, status, error) {
+            if (status == 401) {
+              alert("로그인이 필요합니다.");
             }
-        // }
-        
-        function delete_comment(test) {
-            // if (!localStorage.getItem('token')) {
-            //     alert('로그인후 사용해주세요!')
-            if (confirm("정말 삭제 하시겠습니까?")==false) {
-                return;
+            // window.location.href = "/login";
+          },
+          success: function (response) {
+            if (response["result"] === "success") {
+              alert("변경 완료!");
+              window.location.href = `/detail?post_id=${post_id}`;
             } else {
-                $.ajax({
-                type: "DELETE",
-                url: `/api/posts/${post_id}/comments/${test}`,
-                headers: {
-                    authorization: `Bearer ${localStorage.getItem('token')}`,
-                },
-                data: {
-                    
-                },
-                success: function (response) {
-                    if (response["result"] == "success") {
-                        alert("삭제 완료!");
-                        window.location.href = `/detail?post_id=${post_id}`;
-                    } else {
-                        alert(response["msg"])
-                    }
-                }
-            });
+              alert(response["msg"]);
             }
-            
-        }
+          },
+        });
+      }
+      // }
 
-        function comment_register() {
-            // if (!localStorage.getItem('token')) {
-            //     alert('로그인후 사용해주세요!')
-                
-            // } else if (!$("#comment").val()) {
-            //     alert('내용을 입력해주세요!')
-                
-            // } else {
-                $.ajax({
-                type: "POST",
-                url: `/api/posts/${post_id}/comments`,
-                headers: {
-                    authorization: `Bearer ${localStorage.getItem('token')}`,
-                },
-                data: {
-                    content: $("#comment").val(),
-                },
-                error: function (xhr, status, error) {
-                    if (status == 401) {
-                        alert('로그인이 필요합니다.')
-                    }
-                    // window.location.href = "/";
-                },
-                success: function (response) {
-                    if (response["result"] === "success") {
-                        alert("저장 완료!");
-                        window.location.href = `/detail?post_id=${post_id}`;
-                    } else {
-                        alert("너 뭐냐?")
-                    }
-                }
-            });
-            // }
+      function delete_comment(test) {
+        // if (!localStorage.getItem('token')) {
+        //     alert('로그인후 사용해주세요!')
+        if (confirm("정말 삭제 하시겠습니까?") == false) {
+          return;
+        } else {
+          $.ajax({
+            type: "DELETE",
+            url: `/api/posts/${post_id}/comments/${test}`,
+            headers: {
+              authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+            data: {},
+            success: function (response) {
+              if (response["result"] == "success") {
+                alert("삭제 완료!");
+                window.location.href = `/detail?post_id=${post_id}`;
+              } else {
+                alert(response["msg"]);
+              }
+            },
+          });
         }
+      }
+
+      function comment_register() {
+        // if (!localStorage.getItem('token')) {
+        //     alert('로그인후 사용해주세요!')
+
+        // } else if (!$("#comment").val()) {
+        //     alert('내용을 입력해주세요!')
+
+        // } else {
+        $.ajax({
+          type: "POST",
+          url: `/api/posts/${post_id}/comments`,
+          headers: {
+            authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          data: {
+            content: $("#comment").val(),
+          },
+          error: function (xhr, status, error) {
+            if (status == 401) {
+              alert("로그인이 필요합니다.");
+            }
+            // window.location.href = "/";
+          },
+          success: function (response) {
+            if (response["result"] === "success") {
+              alert("저장 완료!");
+              window.location.href = `/detail?post_id=${post_id}`;
+            } else {
+              alert("너 뭐냐?");
+            }
+          },
+        });
+      }
+      function post_like() {
+                
+        let likeState = true;
+        if ($("#heart").hasClass('X')) {
+          likeState = false;
+        }
+        console.log(likeState)
+        $.ajax({
+          type: "POST",
+          url: `/api/posts/${post_id}`,
+          headers: {
+            authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          data: {
+            likeState: likeState,
+          },
+          error: function (xhr, status, error) {
+            if (status == 401) {
+              alert("로그인이 필요합니다.");
+            }
+            // window.location.href = "/";
+          },
+          success: function (response) {
+            if (response["msg"] === "success") {
+              alert("좋아요 변경 완료!");
+              window.location.href = `/detail?post_id=${post_id}`;
+            } else {
+              alert("너 뭐냐?");
+            }
+          },
+        });
+      }
     </script>
+  </head>
 
-</head>
-
-<body>
+  <body>
     <nav class="navbar is-transparent container_top">
-        <div class="navbar-brand">
-            <a class="navbar-item" href="/">
-                <img src="https://bulma.io/images/bulma-logo.png" alt="Bulma: a modern CSS framework based on Flexbox"
-                    width="112" height="28">
-            </a>
-            <div class="navbar-burger" data-target="navbarExampleTransparentExample">
-                <span></span>
-                <span></span>
-                <span></span>
+      <div class="navbar-brand">
+        <a class="navbar-item" href="/">
+          <img
+            src="https://bulma.io/images/bulma-logo.png"
+            alt="Bulma: a modern CSS framework based on Flexbox"
+            width="112"
+            height="28"
+          />
+        </a>
+        <div
+          class="navbar-burger"
+          data-target="navbarExampleTransparentExample"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+
+      <div id="navbarExampleTransparentExample" class="navbar-menu">
+        <div class="navbar-start">
+          <a class="navbar-item" href="/"> Home </a>
+          <div class="navbar-item has-dropdown is-hoverable">
+            <a class="navbar-link" href="/"> Docs </a>
+            <div class="navbar-dropdown is-boxed">
+              <a class="navbar-item" href="/"> Overview </a>
+              <a class="navbar-item" href="/"> Modifiers </a>
+              <a class="navbar-item" href="/"> Columns </a>
+              <a class="navbar-item" href="/"> Layout </a>
+              <a class="navbar-item" href="/"> Form </a>
+              <hr class="navbar-divider" />
+              <a class="navbar-item" href="/"> Elements </a>
+              <a class="navbar-item is-active" href="/"> Components </a>
             </div>
+          </div>
         </div>
 
-        <div id="navbarExampleTransparentExample" class="navbar-menu">
-            <div class="navbar-start">
-                <a class="navbar-item" href="/">
-                    Home
-                </a>
-                <div class="navbar-item has-dropdown is-hoverable">
-                    <a class="navbar-link" href="/">
-                        Docs
-                    </a>
-                    <div class="navbar-dropdown is-boxed">
-                        <a class="navbar-item" href="/">
-                            Overview
-                        </a>
-                        <a class="navbar-item" href="/">
-                            Modifiers
-                        </a>
-                        <a class="navbar-item" href="/">
-                            Columns
-                        </a>
-                        <a class="navbar-item" href="/">
-                            Layout
-                        </a>
-                        <a class="navbar-item" href="/">
-                            Form
-                        </a>
-                        <hr class="navbar-divider">
-                        <a class="navbar-item" href="/">
-                            Elements
-                        </a>
-                        <a class="navbar-item is-active" href="/">
-                            Components
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="navbar-end">
+        <div class="navbar-end">
+          <div class="navbar-item">
+            <div class="field is-grouped">
+              <div class="navbar-end">
                 <div class="navbar-item">
-                    <div class="field is-grouped">
-                        <div class="navbar-end">
-                            <div class="navbar-item">
-                              <div class="buttons">
-                                <a class="button is-primary logout">
-                                      <strong>My page</strong>
-                                    </a>
-                                    <a class="button is-primary login" href='/login'>
-                                        <strong>로그인</strong>
-                                    </a>
-                                    <a class="button is-primary logout" onclick="signOut()" href='/login'>
-                                        <strong>로그아웃</strong>
-                                    </a>
-                              </div>
-                            </div>
-                        </div>
-                        
-                    </div>
+                  <div class="buttons">
+                    <a class="button is-primary logout">
+                      <strong>My page</strong>
+                    </a>
+                    <a class="button is-primary login" href="/login">
+                      <strong>로그인</strong>
+                    </a>
+                    <a
+                      class="button is-primary logout"
+                      onclick="signOut()"
+                      href="/login"
+                    >
+                      <strong>로그아웃</strong>
+                    </a>
+                  </div>
                 </div>
+              </div>
             </div>
+          </div>
         </div>
+      </div>
     </nav>
-    <hr style="border: 2px;">
-    <br>
+    <hr style="border: 2px" />
+    <br />
     <div>
-        <div class="middle">
-
-            <h1>상세 페이지</h1>
-            <div id="post_detail">
-
-            </div>
+      <div class="middle">
+        <h1>상세 페이지</h1>
+        <div id="post_detail">
+          <div class="control">
+            <input
+              class="input"
+              type="text"
+              id="postTitle"
+              placeholder="title"
+            />
+          </div>
+          <br />
+          <div class="control">
+            <input
+              class="input"
+              type="text"
+              id="postNickname"
+              placeholder="ID"
+            />
+          </div>
+          <br />
+          <div class="control">
+            <textarea class="textarea" id="postContent"></textarea>
+            <i class="fas fa-heart" id="heart" onclick="post_like()"></i>
+            <i class="far fa-heart" id="heart" onclick="post_like()"></i>
+          </div>
+          <br />
+          <div class="field is-grouped is-grouped-right">
+            <p class="control">
+              <a
+                class="button is-primary login"
+                id="modal_btn"
+                onclick="location.href='/correction?post_id=${post_id}'"
+              >
+                수정/삭제
+              </a>
+            </p>
+            <p class="control">
+              <a class="button is-light login" onclick="location.href='/'">
+                Cancel
+              </a>
+            </p>
+          </div>
         </div>
-        <br>
-        <div class="middle">
+      </div>
+      <br />
+      <div class="middle">
+        댓글<strong id="comment_count"></strong>
 
-            댓글<strong id="comment_count"></strong>
-
-
-            <hr style="font-size: large;">
-            <div id="comment_list">
-
-            </div>
-            <br>
-            <footer class="footer">
-                <textarea class="textarea is-primary" placeholder="Primary textarea" id="comment"></textarea>
-                <br>
-                <div class="control">
-                    <button class="button is-primary" onclick="comment_register()">댓글 등록</button>
-                </div>
-            </footer>
-        </div>
-        
-        
+        <hr style="font-size: large" />
+        <div id="comment_list"></div>
+        <br />
+        <footer class="footer">
+          <textarea
+            class="textarea is-primary"
+            placeholder="Primary textarea"
+            id="comment"
+          ></textarea>
+          <br />
+          <div class="control">
+            <button class="button is-primary" onclick="comment_register()">
+              댓글 등록
+            </button>
+          </div>
+        </footer>
+      </div>
     </div>
-    
-</body>
-
+  </body>
 </html>

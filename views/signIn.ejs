@@ -80,6 +80,7 @@
           success: function (response) {
             alert("사용자인증 연결") 
             localStorage.setItem('token',response.token) //따라 쓰긴 했는데 setItem 이건 어디에서 온거지?
+            localStorage.setItem('nickname',response.nickname)
             // console.log("하하",response.token) 
             window.location.replace("/"); 
           },

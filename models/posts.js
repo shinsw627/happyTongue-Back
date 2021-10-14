@@ -34,6 +34,12 @@ const postsSchema = new Schema({
       ref: 'comments',
     },
   ],
+  like_id: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'user'
+    },
+  ],
 });
 
 module.exports = mongoose.model('posts', postsSchema);
