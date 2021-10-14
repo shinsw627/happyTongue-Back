@@ -1,9 +1,10 @@
 const express = require("express");
+const app = express();
 const http = require("http");
 const cors = require("cors");
 const server = http.createServer(app);
 // console.log("1")
-const app = express();
+
 // const authmiddleware = require("./middlewares/auth-middleware")
 const connect = require('./models'); 
 connect();
