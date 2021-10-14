@@ -4,6 +4,7 @@ const Posts = require("../models/posts");
 const User = require("../models/user");
 const commentsRouter = require("./comments");
 const authMiddleware = require("../middlewares/auth-middleware");
+const Middleware = require("../middlewares/middleware");
 
 const router = express.Router();
 
@@ -144,25 +145,29 @@ router.patch("/:post_id", authMiddleware, async (req, res) => {
 });
 
 //detail post
-router.get("/:post_id", authMiddleware, async (req, res) => {
+router.get("/:post_id", Middleware, async (req, res) => {
   const { post_id } = req.params;
+  
   const { user } = res.locals;
-  const userId = user.userId;
+  console.log(user)
+  
   let likeState = false;
 
   const posts = await Posts.findOne({ _id: post_id });
-
   const postlike = posts.like_id;
-  for (let i = 0; i < postlike.length; i++) {
-    if (postlike[i].toString() == userId) {
-      console.log(postlike[i].toString());
-      likeState = true;
-    }
-  }
-
   const likes = postlike.length;
-  
-  res.json({ detail: posts, likeState, likes });
+  if(!user){
+    res.json({ detail: posts, likes})
+  } else {
+    const userId = user.userId;
+    for (let i = 0; i < postlike.length; i++) {
+      if (postlike[i].toString() == userId) {
+        console.log(postlike[i].toString());
+        likeState = true;
+      }
+    }
+    res.json({ detail: posts, likeState, likes});
+  }
 });
 
 //like post

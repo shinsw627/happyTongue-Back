@@ -85,6 +85,7 @@ router.get("/me", authMiddleware, async (req,res) => {
     res.send({
         user: {
             email: user.email,
+            nickname: user.nickname
         }
     })
 })
