@@ -16,6 +16,10 @@ router.get('/', async (req, res) => {
   try {
     const posts = await Posts.find({}).sort('-date')
 
+    for (let i = 0; i < posts.length; i++) {
+      posts[i].update({ _id: posts[i]['_id'].toString() });
+    }
+
     res.json({ posts: posts })
   } catch (err) {
     res.status(400).send({ result: '관리자에게 문의하세요!' })
@@ -40,7 +44,7 @@ router.get('/myinfo', authMiddleware, async (req, res) => {
 })
 
 //내가 찜한 게시물 불러오기
-router.get('/dibsOn', authMiddleware, async (req, res) => {
+router.get('/dibson', authMiddleware, async (req, res) => {
   const { user } = res.locals
   const userId = user.userId
   const nickname = user.nickname
@@ -84,6 +88,7 @@ router.post('/', authMiddleware, async (req, res) => {
 //게시물 검색
 router.get('/search/:keyword', async (req, res, next) => {
   const { keyword } = req.params
+  //검색내용을 공백으로 분리하여 전체 탐색
   const keywords = keyword.split(' ')
   const list_keywords = []
   for (let i = 0; i < keywords.length; i++) {
@@ -119,6 +124,7 @@ router.delete('/:post_id', authMiddleware, async (req, res) => {
 router.patch('/:post_id', authMiddleware, async (req, res) => {
   const { post_id } = req.params
   const { title, content, imgUrl, storeName, storeArea } = req.body
+  
   const { user } = res.locals
   const nickname = user.nickname
   let date = new Date().toISOString()
@@ -126,9 +132,9 @@ router.patch('/:post_id', authMiddleware, async (req, res) => {
   const [ispostid] = await Posts.find({ _id: post_id })
   
   if (ispostid.nickname == nickname) {
-    await Posts.updateMany({ _id: post_id }, { $set: { title, content, imgUrl, storeName, storeArea, date } })
+    await Posts.updateMany({ _id: post_id }, { $set: { title, content, imgUrl, storeName, storeArea } })
   }
-  res.send({ result: 'success' })
+  res.send({ result: 'success', date })
 })
 
 //게시물 상세 조회
