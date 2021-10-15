@@ -1,4 +1,6 @@
-const mongoose = require("mongoose");
+
+const mongoose = require('mongoose')
+
 
 const connect = () => {
   // const id = 'test',
@@ -6,20 +8,24 @@ const connect = () => {
   // const dbName ="admin";
   mongoose.connect(
     // `mongodb://${id}:${password}@localhost:27017/${dbName}`,
-    "mongodb://test:test@3.34.138.243:27017/mini2?authSource=admin",
+
+    process.env.MONGO_URL,
+
     {
       useNewUrlParser: true,
       ignoreUndefined: true,
     },
     (error) => {
-      if (error) console.log("Mongo DB Connect Error");
-      else console.log("Mongo DB connect Success");
+
+      if (error) console.log('Mongo DB Connect Error')
+      else console.log('Mongo DB connect Success')
     }
-  );
-};
+  )
+}
 
-mongoose.connection.on("error", (err) => {
-  console.error("Mongo DB Connect Error", err);
-});
+mongoose.connection.on('error', (err) => {
+  console.error('Mongo DB Connect Error', err)
+})
 
-module.exports = connect;
+module.exports = connect
+
