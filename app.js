@@ -5,10 +5,10 @@ const cors = require('cors')
 require('dotenv').config()
 const server = http.createServer(app)
 const SocketIO = require('socket.io')
-const server = http.createServer(app)
 const io = SocketIO(server)
 const moment = require('moment')
 const PORT = process.env.PORT
+const Chat = require('./models/chat')
 // console.log("1")
 
 // const authmiddleware = require("./middlewares/auth-middleware")
