@@ -5,7 +5,7 @@ const authMiddleware = require('../middlewares/auth-middleware')
 const authmiddleware = require('../middlewares/auth-middleware')
 const user = require('../models/user')
 const User = require('../models/user')
-const SECRET_KEY = process.env.KEY
+const SECRET_KEY = process.env.MY_SECRET_KEY
 //POST  (/api/users)/auth
 //DELETE  (/api/users)/auth
 //POST  (/api/users)/signup
