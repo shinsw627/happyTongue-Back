@@ -2,38 +2,37 @@ const mongoose = require('mongoose')
 const { Schema } = mongoose
 
 const UserSchema = new Schema({
-    nickname: {
-        type: String,
-        required: true,
+  nickname: {
+    type: String,
+    required: true,
+  },
+  email: {
+    type: String,
+    required: true,
+  },
+  password: {
+    type: String,
+    required: true,
+  },
+  post_id: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'posts',
     },
-    email: {
-        type:String,
-        required: true,
+  ],
+  like_post: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'posts',
     },
-    password: {
-        type: String,
-        required: true,
-    },
-    post_id: [
-        {
-        type: Schema.Types.ObjectId,
-        ref: 'posts' 
-        }
-    ],
-    like_post: [
-        {
-        type: Schema.Types.ObjectId,
-        ref: 'posts' 
-        }
-    ],
+  ],
 })
 
 UserSchema.virtual('userId').get(function () {
-    return this._id.toHexString()
+  return this._id.toHexString()
 })
 UserSchema.set('toJSON', {
-    virtuals: true,
+  virtuals: true,
 })
 
 module.exports = mongoose.model('User', UserSchema)
-

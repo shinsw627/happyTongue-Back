@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose')
 
-const { Schema } = mongoose;
+const { Schema } = mongoose
 const postsSchema = new Schema({
   _id: Schema.Types.ObjectId,
 
@@ -37,9 +37,9 @@ const postsSchema = new Schema({
   like_id: [
     {
       type: Schema.Types.ObjectId,
-      ref: 'user'
+      ref: 'user',
     },
   ],
-});
+})
 
-module.exports = mongoose.model('posts', postsSchema);
+module.exports = mongoose.model('posts', postsSchema)
