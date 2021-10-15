@@ -1,6 +1,8 @@
+
 const mongoose = require('mongoose')
 
 const { Schema } = mongoose
+
 const postsSchema = new Schema({
   _id: Schema.Types.ObjectId,
 
@@ -34,6 +36,7 @@ const postsSchema = new Schema({
       ref: 'comments',
     },
   ],
+
   like_id: [
     {
       type: Schema.Types.ObjectId,
@@ -43,3 +46,4 @@ const postsSchema = new Schema({
 })
 
 module.exports = mongoose.model('posts', postsSchema)
+

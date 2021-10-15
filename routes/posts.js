@@ -1,3 +1,4 @@
+
 const express = require('express')
 const Mongoose = require('mongoose')
 const Posts = require('../models/posts')
@@ -16,9 +17,11 @@ router.get('/', async (req, res) => {
   try {
     const posts = await Posts.find({}).sort('-date')
 
+
     for (let i = 0; i < posts.length; i++) {
       posts[i].update({ _id: posts[i]['_id'].toString() });
     }
+
 
     res.json({ posts: posts })
   } catch (err) {
@@ -71,6 +74,7 @@ router.post('/', authMiddleware, async (req, res) => {
   const _id = new Mongoose.Types.ObjectId()
   await User.findOneAndUpdate({ _id: userId }, { $push: { post_id: _id } })
 
+
   await Posts.create({
     _id,
     nickname,
@@ -80,42 +84,52 @@ router.post('/', authMiddleware, async (req, res) => {
     storeName,
     storeArea,
     date,
+
   })
 
   res.status(200).send({ result: 'success' })
 })
 
+
 //게시물 검색
 router.get('/search/:keyword', async (req, res, next) => {
   const { keyword } = req.params
+
   //검색내용을 공백으로 분리하여 전체 탐색
   const keywords = keyword.split(' ')
+
   const list_keywords = []
   for (let i = 0; i < keywords.length; i++) {
     list_keywords.push({
       $or: [
         { title: { $regex: keywords[i] } },
         { content: { $regex: keywords[i] } },
+
         { nickname: { $regex: keywords[i] } },
         { storeArea: { $regex: keywords[i] } },
         { storeName: { $regex: keywords[i] } },
       ],
     })
   }
+
   const search_posts = await Posts.find({ $or: list_keywords }).sort('-date')
 
   res.json({ posts: search_posts })
 })
 
+
 //게시물 삭제
+
 router.delete('/:post_id', authMiddleware, async (req, res) => {
   const { post_id } = req.params
   const { user } = res.locals
   const nickname = user.nickname
 
+
   await User.findOneAndUpdate({ nickname }, { $pull: { like_post: post_id } })
   await User.findOneAndUpdate({ nickname }, { $pull: { post_id: post_id } })
   await Posts.deleteOne({ _id: post_id })
+
 
   res.send({ result: 'success' })
 })
@@ -123,13 +137,16 @@ router.delete('/:post_id', authMiddleware, async (req, res) => {
 //게시물 수정
 router.patch('/:post_id', authMiddleware, async (req, res) => {
   const { post_id } = req.params
+
   const { title, content, imgUrl, storeName, storeArea } = req.body
   
+
   const { user } = res.locals
   const nickname = user.nickname
   let date = new Date().toISOString()
 
   const [ispostid] = await Posts.find({ _id: post_id })
+
   
   if (ispostid.nickname == nickname) {
     await Posts.updateMany({ _id: post_id }, { $set: { title, content, imgUrl, storeName, storeArea } })
@@ -157,3 +174,4 @@ router.post('/:post_id', authMiddleware, async (req, res) => {
 })
 
 module.exports = router
+

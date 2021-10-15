@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -141,12 +142,15 @@
       }
       function make_comments(item, date) {
         let htmlTemp = `<div class="box">
+
                                 <article class="media">
 
                                     <div class="media-content">
                                         <div class="content">
                                             <p>
+
                                                 <strong id="author">${item["nickname"]}</strong> <small>${date}</small>
+
                                                 <br>
                                                 ${item["content"]}
                                             </p>
@@ -159,6 +163,8 @@
                                                     </span>
                                                 </a>
 
+
+
                                             </div>
                                         </nav>
                                     </div>
@@ -168,7 +174,9 @@
                                                 <div class="dropdown-item">
                                                     <div class="content">
                                                         <p>
+
                                                             <strong>${item["nickname"]}</strong> <small>${date}</small>
+
                                                             <br>
                                                             <input class="input is-primary" type="text" style="width:400px;" placeholder="${item["content"]}" id="${item["comment_id"]}1">
                                                         </p>
@@ -191,6 +199,7 @@
                                         </a>
                                     </div>
                                 </article>
+
 
                             </div>`;
         $("#comment_list").append(htmlTemp);
@@ -471,3 +480,4 @@
     </div>
   </body>
 </html>
+

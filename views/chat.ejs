@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <link rel="stylesheet" href="css/style.css" />
+        <script
+            src="https://code.jquery.com/jquery-3.5.1.js"
+            integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+            crossorigin="anonymous"
+        ></script>
+    </head>
+    <script>
+        function getSelf(callback) {
+            $.ajax({
+                type: 'GET',
+                url: '/api/users/me',
+                headers: {
+                    authorization: `Bearer ${localStorage.getItem('token')}`,
+                },
+                success: function (response) {
+                    callback(response.user)
+                },
+                error: function (status, error) {
+                    if (status == 401) {
+                        alert('로그인이 필요합니다.')
+                    } else {
+                        localStorage.clear()
+                        alert('로그인 후 이용하세요.')
+                    }
+                    window.location.href = '/'
+                },
+            })
+        }
+        $(document).ready(function () {
+            getSelf(function (u) {
+                user = u
+                console.log(user)
+            })
+        })
+    </script>
+    <body>
+        <div class="wrapper">
+            <div class="user-container">
+                <label for="nickname">접속유저:</label>
+                <h5>접속자</h5>
+            </div>
+            <div class="display-container">
+                <ul class="chatting-list">
+                    <li class="sent"></li>
+                    <li class="received"></li>
+                </ul>
+            </div>
+            <div class="input-container">
+                <span>
+                    <input type="text" class="chatting-input" />
+                    <button class="send-button">전송</button>
+                </span>
+            </div>
+        </div>
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="js/chat.js"></script>
+    </body>
+</html>

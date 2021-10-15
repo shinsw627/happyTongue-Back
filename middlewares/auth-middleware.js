@@ -1,3 +1,4 @@
+
 const jwt = require('jsonwebtoken')
 const User = require('../models/user')
 const SECRET_KEY = process.env.MY_SECRET_KEY
@@ -36,3 +37,4 @@ module.exports = (req, res, next) => {
 }
 
 //미들웨어 문제!
+

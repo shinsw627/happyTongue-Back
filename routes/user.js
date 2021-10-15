@@ -1,3 +1,4 @@
+
 const express = require('express')
 const router = express.Router()
 const jwt = require('jsonwebtoken')
@@ -6,6 +7,7 @@ const authmiddleware = require('../middlewares/auth-middleware')
 const user = require('../models/user')
 const User = require('../models/user')
 const SECRET_KEY = process.env.MY_SECRET_KEY
+
 //POST  (/api/users)/auth
 //DELETE  (/api/users)/auth
 //POST  (/api/users)/signup
@@ -14,6 +16,7 @@ const SECRET_KEY = process.env.MY_SECRET_KEY
 // console.log("4")
 //회원가입
 router.post('/signup', async (req, res) => {
+
   const { nickname, email, password, confirmPassword } = req.body
   const nicknameregax = /^[a-zA-Z0-9가-힣]{3,}$/
   //이메일 벨리데이션도 정하자//
@@ -92,3 +95,4 @@ router.get('/me', authMiddleware, async (req, res) => {
 })
 
 module.exports = router
+

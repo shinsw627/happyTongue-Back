@@ -9,6 +9,7 @@ const router = express.Router()
 
 //댓글 조회
 router.get('/:post_id/comments', async (req, res) => {
+
   const { post_id } = req.params
   const comments = await Posts.findOne({ _id: post_id }).populate({
     path: 'comment_id',
@@ -16,10 +17,12 @@ router.get('/:post_id/comments', async (req, res) => {
   })
 
   res.json({ detail: comments['comment_id'] })
+
 })
 
 //댓글 작성
 router.post('/:post_id/comments', authMiddleware, async (req, res) => {
+
   const { post_id } = req.params
   const { content } = req.body
   const { user } = res.locals
@@ -48,6 +51,7 @@ router.patch(
   authMiddleware,
   async (req, res) => {
     const { comment_id } = req.params
+
     const { content } = req.body
     const { user } = res.locals
     const nickname = user.nickname
@@ -55,15 +59,18 @@ router.patch(
     let date = new Date().toISOString()
     console.log(c_nickname, nickname)
 
+
     if (c_nickname.nickname === nickname) {
       await Comments.updateMany(
         { _id: comment_id },
         { $set: { content, date } }
       )
+
       res.send({ result: 'success' })
     } else {
       res.send({ msg: '내 댓글이 아닙니다.' })
     }
+
   }
 )
 
@@ -72,22 +79,27 @@ router.delete(
   '/:post_id/comments/:comment_id',
   authMiddleware,
   async (req, res) => {
+
     const { post_id, comment_id } = req.params
     const { user } = res.locals
     const nickname = user.nickname
     const c_userId = await Comments.findOne({ _id: comment_id })
+
 
     if (c_userId.nickname === nickname) {
       await Posts.findOneAndUpdate(
         { _id: post_id },
         { $pull: { comment_id: comment_id } }
       )
+
       await Comments.deleteOne({ comment_id })
       res.send({ result: 'success' })
     } else {
       res.send({ msg: '내 댓글이 아닙니다.' })
     }
+
   }
 )
 
 module.exports = router
+
