@@ -62,7 +62,7 @@ router.post('/auth', async (req, res) => {
     const{email, password} = req.body;
     // console.log(email)
     const user = await User.findOne({ email: email, }).exec();
-    if (!user || password !== user.password) {
+    if (!user || email !== user.email) {
         res.status(400).send({
             errorMessage: '이메일 또는 패스워드가 틀렸습니다',
         })

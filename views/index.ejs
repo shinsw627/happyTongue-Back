@@ -25,9 +25,9 @@
     />
   </head>
   <script>
-    const queryString = window.location.search;
-    const urlParams = new URLSearchParams(queryString);
-    const keyword = urlParams.get("keyword");
+    // const queryString = window.location.search;
+    // const urlParams = new URLSearchParams(queryString);
+    // const keyword = urlParams.get("keyword");
 
     $(document).ready(function () {
       get_posts();
@@ -100,12 +100,15 @@
       $("#postsList").append(htmlTemp);
     }
 
-    function get_search() {
+    function search() {
+            let keyword = $("#search_word").val()
             $("#postsList").empty()
             $.ajax({
-                type: "GET",
-                url: `/api/posts/search/${keyword}`,
-                data: {},
+                type: "POST",
+                url: '/api/posts/search',
+                data: {
+                  keyword:keyword
+                },
                 error: function (xhr, status, error) {
                     
                         alert("검색어가 포함된 게시물이 없습니다.");
@@ -133,13 +136,13 @@
             })
     }
     
-    function search(callback) {
-            const keyword = $("#search_word").val()
-            window.location.href = `/?keyword=${keyword}`
-            alert('이동!')
-            console.log(keyword)
-            callback();
-    }
+    // function search(callback) {
+    //         const keyword = $("#search_word").val()
+    //         window.location.href = '/search'
+    //         alert('이동!')
+    //         console.log(keyword)
+    //         callback();
+    // }
 
   </script>
   <body>
@@ -166,7 +169,7 @@
                       <input class="input" id="search_word" type="text" placeholder="Find a post">
                   </p>
                   <p class="control">
-                      <button class="button" onclick="search(get_search())">
+                      <button class="button" onclick="search()">
                           Search
                       </button>
                   </p>

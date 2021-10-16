@@ -92,19 +92,19 @@ router.post('/', authMiddleware, async (req, res) => {
 
 
 //게시물 검색
-router.get('/search/:keyword', async (req, res, next) => {
-  const { keyword } = req.params
-
+router.post('/search', async (req, res) => {
+  const {keyword} = req.body
+  console.log(keyword)
   //검색내용을 공백으로 분리하여 전체 탐색
   const keywords = keyword.split(' ')
 
   const list_keywords = []
+  console.log(list_keywords)
   for (let i = 0; i < keywords.length; i++) {
     list_keywords.push({
       $or: [
         { title: { $regex: keywords[i] } },
         { content: { $regex: keywords[i] } },
-
         { nickname: { $regex: keywords[i] } },
         { storeArea: { $regex: keywords[i] } },
         { storeName: { $regex: keywords[i] } },
