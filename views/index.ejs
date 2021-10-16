@@ -25,9 +25,9 @@
     />
   </head>
   <script>
-    // const queryString = window.location.search;
-    // const urlParams = new URLSearchParams(queryString);
-    // const keyword = urlParams.get("keyword");
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const keyword = urlParams.get("keyword");
 
     $(document).ready(function () {
       get_posts();
@@ -104,11 +104,9 @@
             let keyword = $("#search_word").val()
             $("#postsList").empty()
             $.ajax({
-                type: "POST",
-                url: '/api/posts/search',
-                data: {
-                  keyword:keyword
-                },
+                type: "GET",
+                url: `/api/posts/search/${keyword}`,
+                data: {},
                 error: function (xhr, status, error) {
                     
                         alert("검색어가 포함된 게시물이 없습니다.");
@@ -136,13 +134,13 @@
             })
     }
     
-    // function search(callback) {
-    //         const keyword = $("#search_word").val()
-    //         window.location.href = '/search'
-    //         alert('이동!')
-    //         console.log(keyword)
-    //         callback();
-    // }
+    function search(callback) {
+            const keyword = $("#search_word").val()
+            window.location.href = `/keyword?${keyword}`
+            alert('이동!')
+            console.log(keyword)
+            callback();
+    }
 
   </script>
   <body>
