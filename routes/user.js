@@ -2,16 +2,16 @@ const express = require('express');
 const router = express.Router();
 const jwt = require("jsonwebtoken");
 const authMiddleware = require('../middlewares/auth-middleware');
-const authmiddleware =  require("../middlewares/auth-middleware");
-const user = require('../models/user');
 const User = require('../models/user')
-
+const bcrypt = require('bcrypt')
 
 //회원가입
 router.post('/signup', async (req, res) => {
-    const { nickname, email, password, confirmPassword} = req.body
-    const nicknameregax = /^[a-zA-Z0-9가-힣]{3,}$/
-    const passwordregax = /^[a-zA-Z0-9]{4,}$/
+    let { nickname, email, password, confirmPassword} = req.body
+    const nicknameregax = /^[a-zA-Z0-9가-힣]+[a-zA-z가-힣0-9]{3,}$/
+    const passwordregax = /^[a-zA-Z0-9]+[a-z0-9~!@#$%^&*()_+<>?:{}]{4,}$/
+    const emailregax =
+            /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i
     
     if(!nicknameregax.test(nickname)) {
         res.status(400).send({
@@ -37,10 +37,16 @@ try{
     if (existsUsers) {
         res.status(400).send({
             errorMessage: '이메일 또는 닉네임이 이미 사용중입니다.'
-        })
+        })} else if (!emailregax.test(email)) {
+            res.status(400).send({
+                errorMessage: '이메일 형식에 맞춰주세요!'
+            })
         return
     }
-
+    
+    const encryptedPassword = bcrypt.hashSync(password, 10)
+    password = encryptedPassword
+    
     const user = await new User({email ,nickname, password})
     await user.save()
 
@@ -51,6 +57,7 @@ try{
 });
 
 //로그인
+
 router.post('/auth', async (req, res) => {
     const{email, password} = req.body;
     // console.log(email)
@@ -58,6 +65,12 @@ router.post('/auth', async (req, res) => {
     if (!user || password !== user.password) {
         res.status(400).send({
             errorMessage: '이메일 또는 패스워드가 틀렸습니다',
+        })
+        return
+    }
+    if (!bcrypt.compareSync(password, user.password)) {
+        res.status(401).send({
+            errorMessage: '이메일 또는 패스워드가 잘못됐습니다.',
         })
         return
     }

@@ -1,0 +1,4 @@
+#dotenv enviroment variables
+.env
+.env.test
+
