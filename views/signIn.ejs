@@ -22,7 +22,7 @@
       rel="stylesheet"
     />
     <link href="/mystyle.css" rel="stylesheet" />
-    <title>게시판 | 로그인</title>
+    <title> 로그인</title>
 
     <style>
       .jumbotron {
@@ -69,7 +69,6 @@
       function sign_in() {
         let email = $("#inputEmail").val();
         let password = $("#inputPassword").val();
-        alert("파이팅!")
         $.ajax({
           type: "POST",
           url: "/api/users/auth",
@@ -78,14 +77,11 @@
             email: email,
           },
           success: function (response) {
-            alert("사용자인증 연결") 
-            localStorage.setItem('token',response.token) //따라 쓰긴 했는데 setItem 이건 어디에서 온거지?
-            // console.log("하하",response.token) 
+            alert("로그인 완료!") 
+            localStorage.setItem('token',response.token) 
             window.location.replace("/me"); 
           },
           error: function (error) {
-            // console.log("ㅜ")
-            // customAlert(error.responseJSON.errorMessage);
           },
         });
       }

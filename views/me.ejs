@@ -31,7 +31,7 @@
             }); //페이지가 그려줄때 getself라는 함수를 호출!!!
             
             function getSelf(callback) {
-                alert("안녕")
+                alert("getself 연결이 되었습니다")
                 $.ajax({
                 type:"GET",
                 url: "/api/users/me",//api 통신 하려는 url 
@@ -39,7 +39,6 @@
                         authorization: `Bearer ${localStorage.getItem("token")}`,},
                         success: function (response) {
                         callback(response.user);
-                        // alert("hello");
                     },
                     error: function (status, error) {
                         if (status == 401) {
