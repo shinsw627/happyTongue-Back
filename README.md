@@ -28,7 +28,7 @@ Frontend
 
 Figma를 이용해 와이어프레임을 설계했습니다!
 
-![와이어프레임.jpg](readme_img.jpg)
+![와이어프레임.jpg](readme_img/와이어프레임.jpg)
 
 [https://www.figma.com/file/uUDubcptUhos77TzoODvyP/Untitled?node-id=0%3A1](https://www.figma.com/file/uUDubcptUhos77TzoODvyP/Untitled?node-id=0%3A1)
 
